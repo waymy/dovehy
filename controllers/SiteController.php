@@ -122,4 +122,10 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    /**
+     * add user
+     */
+    public function actionAdduser(){
+    }
 }
