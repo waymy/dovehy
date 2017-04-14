@@ -128,4 +128,11 @@ class SiteController extends Controller
      */
     public function actionAdduser(){
     }
+    /**
+     * add article
+     */
+    public function actionArticle(){
+        return $this->render('article');
+
+    }
 }
