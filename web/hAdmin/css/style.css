@@ -44,7 +44,10 @@ h5 {
     margin-top: 5px;
     font-weight: 600;
 }
-
+a {
+  color: #2e3e4e;
+  text-decoration: none;
+}
 a:focus {
     outline: none;
 }
@@ -1449,7 +1452,6 @@ button.dim:active:before {
 .jqstooltip {
     box-sizing: content-box;
 }
-
 
 /* FULLCALENDAR */
 
@@ -4378,6 +4380,31 @@ a.close-canvas-menu:hover {
     color: #fff;
 }
 
+/* define width */
+.w-45{
+  width: 45px;
+}
+.w-max-450{
+  max-width: 450px;
+}
+.w-max-300{
+  max-width: 300px;
+}
+.w-max-250{
+  max-width: 250px;
+}
+.w-max-200{
+  max-width: 200px;
+}
+.w-max-150{
+  max-width: 150px;
+}
+.w-max-100{
+  max-width: 100px;
+}
+.w-max-50{
+  max-width: 50px;
+}
 
 /* FULL HEIGHT */
 
@@ -7935,4 +7962,74 @@ body.skin-3 {
     overflow: hidden;
     font-size: 0;
     background-color: #131e26;
+}
+/* define style */
+/*子栏目 样式*/
+/** S栏目梯形样式 */
+.p-b{
+  padding-bottom:5px; 
+}
+.p-b-sm{
+  padding-bottom:10px; 
+}
+.p-b-xl{
+  padding-bottom:100px; 
+}
+.p-l-sm{
+  padding-left:15px;
+}
+.p-l-md{
+  padding-left:60px;
+}
+
+.p-lr-dm{
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.m-tb-sm{
+  margin:5px 0px !important;
+}
+
+.area td, .area th{ height:25px; padding:5px 8px; border-bottom:#e4e4e4 dashed 1px; text-align:left}
+.area th{ height:45px;}
+/*input 样式*/
+.area .parentboard{}
+.area .add{ padding-left:55px; background:url(../img/bg_repno.gif) no-repeat -240px -600px}
+a.addtr{ padding-left:5px; line-height:25px; color:#F60; }
+
+/*子栏目 样式*/
+.area .board{ padding-left:55px; background:url(../img/bg_repno.gif) no-repeat -240px -550px;}
+.addchildboard{ margin-right: 5px; padding-left:3px; color:#FFF; zoom: 1; }
+.childboard{ padding-left:110px; background:url(../img/bg_repno.gif) no-repeat -185px -550px; }
+.color-2e3e4e{ color: #2e3e4e}
+
+.text-active,
+.active > .text {
+  display: none !important;
+}
+.active > .text-active {
+  display: inline-block !important;
+}
+.text-success {
+    color: #8ec165;
+}
+
+/* self-adaption*/
+@media (max-width: 690px) {
+	body.fixed-sidebar.mini-navbar .navbar-static-side {
+        width: 0;
+    }
+	#page-wrapper {
+        margin-left: 0!important;
+    }
+	.yzm-table-width{
+		display:none;
+	}
+	.btn {
+		font-size:14px;
+		padding: 6px 10px;
+	}
+	.nav-close {
+        display: block;
+    }	
 }
