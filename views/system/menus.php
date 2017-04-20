@@ -1,7 +1,8 @@
 <?php
 
 /* @var $this yii\web\View */
-
+use yii\helpers\Html;
+use yii\helpers\Url;
 $this->title = 'My Yii Application';
 ?>
 
@@ -20,48 +21,76 @@ $this->title = 'My Yii Application';
         </tbody>
       </table>
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <?php foreach($menus as $level){?>
         <tbody>
           <tr>
-            <td width="30px" onclick="toggle_group('#group_4','#on_off_4')"><a id="on_off_4" class="on_off" href="javascript:;"><i class="fa fa-folder-open"></i></a></td>
-            <td width="50px"><input class="form-control input-sm w-45" type="text" name="order[4]" value="0"></td>
+            <td width="30px" onclick="toggle_group('#group_<?=$level['id']?>','#on_off_<?=$level['id']?>')"><a id="on_off_<?=$level['id']?>" class="on_off" href="javascript:;"><i class="fa fa-folder-open"></i></a></td>
+            <td width="50px"><input class="form-control input-sm w-45" type="text" name="order[<?=$level['id']?>]" value="<?=$level['listorder']?>"></td>
             <td><div class="parentboard">
-                <input class="form-control input-sm w-max-100" type="text" name="name[4]" value="微信服务">
+                <input class="form-control input-sm w-max-100" type="text" name="name[<?=$level['id']?>]" value="<?=$level['menuname']?>">
               </div></td>
-            <td width="50px" style="text-align:center" class="yzm-table-width"><a href="#" onclick="SetDisplay(this,4)" data-toggle="class" class=" active"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+            <td width="50px" style="text-align:center" class="yzm-table-width"><a href="#" onclick="SetDisplay(this,<?=$level['id']?>)" data-toggle="class" class=" active"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
             <td width="200px" class="operate yzm-table-width"><div class="btn-group">
                 <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">操 作 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="javascript:;" onclick="editMenu(4)"><i class="fa fa-edit"></i> 编辑</a></li>
+                  <li><a href="javascript:;" onclick="editMenu(<?=$level['id']?>)"><i class="fa fa-edit"></i> 编辑</a></li>
                   <li class="divider m-tb-sm"></li>
-                  <li><a href="javascript:;" onclick="delMenu(4)"><i class="fa fa-trash-o"></i> &nbsp;删除</a></li>
+                  <li><a href="javascript:;" onclick="delMenu(<?=$level['id']?>)"><i class="fa fa-trash-o"></i> &nbsp;删除</a></li>
                 </ul>
               </div></td>
           </tr>
         </tbody>
-        <tbody class="group_" id="group_4">
+        <tbody class="group_" id="group_<?=$level['id']?>">
+          <?php foreach($level['data'] as $level1){?>
           <tr>
             <td width="30px">&nbsp;</td>
-            <td width="50px"><input class="form-control input-sm w-45" type="text" name="order[10]" value="0"></td>
+            <td width="50px"><input class="form-control input-sm w-45" type="text" name="order[<?=$level1['id']?>]" value="<?=$level1['listorder']?>"></td>
             <td><div class="board">
-                <input class="form-control input-sm w-max-100 inline" type="text" name="name[10]" value="自动回复">
-                <a onclick="addrow(this,10,3,'添加子菜单')" class="addchildboard " href="javascript:;"><i class="fa fa-plus-square color-2e3e4e"></i> 添加</a> </div></td>
-            <td width="50px" style="text-align:center" class="yzm-table-width"><a href="#" onclick="SetDisplay(this,10)" data-toggle="class" class=" active"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+                <input class="form-control input-sm w-max-100 inline" type="text" name="name[[<?=$level1['id']?>]]" value="<?=$level1['menuname']?>">
+                <a onclick="addrow(this,[<?=$level1['id']?>],3,'添加子菜单')" class="addchildboard " href="javascript:;"><i class="fa fa-plus-square color-2e3e4e"></i> 添加</a> </div></td>
+            <td width="50px" style="text-align:center" class="yzm-table-width"><a href="#" onclick="SetDisplay(this,[<?=$level1['id']?>])" data-toggle="class" class=" active"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
             <td width="200px" class="operate yzm-table-width"><div class="btn-group">
                 <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">操 作 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="javascript:;" onclick="editMenu(10)"><i class="fa fa-edit"></i> 编辑</a></li>
+                  <li><a href="javascript:;" onclick="editMenu([<?=$level1['id']?>])"><i class="fa fa-edit"></i> 编辑</a></li>
                   <li class="divider m-tb-sm"></li>
-                  <li><a href="javascript:;" onclick="delMenu(10)"><i class="fa fa-trash-o"></i> &nbsp;删除</a></li>
+                  <li><a href="javascript:;" onclick="delMenu([<?=$level1['id']?>])"><i class="fa fa-trash-o"></i> &nbsp;删除</a></li>
                 </ul>
               </div></td>
           </tr>
+          <?php foreach($level1['data'] as $level2) {?>
+          <tr>
+            <td width="30px">&nbsp;</td>
+            <td width="50px"><input class="form-control input-sm w-45" type="text" name="order[<?=$level2['id']?>]" value="<?=$level2['listorder']?>"></td>
+            <td>
+            <div class="childboard">
+              <input class="form-control input-sm w-max-100" type="text" name="name[<?=$level2['id']?>]" value="<?=$level2['menuname']?>">
+            </div>
+            </td>
+            <td width="50px" style="text-align:center" class="yzm-table-width">
+              <a href="#" onclick="SetDisplay(this,<?=$level2['id']?>)" data-toggle="class" class="<?php if($level2["is_display"]) echo "active"?>"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+              </td>
+            <td width="200px" class="operate yzm-table-width">
+            <div class="btn-group">
+                      <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">操 作 <span class="caret"></span></button>
+                      <ul class="dropdown-menu">
+                        <li><a href="javascript:;" onclick="editMenu(<?=$level2['id']?>)"><i class="fa fa-edit"></i> 编辑</a></li>
+                        <li class="divider m-tb-sm"></li>
+                        <li><a href="javascript:;" onclick="delMenu(<?=$level2['id']?>)"><i class="fa fa-trash-o"></i> &nbsp;删除</a></li>
+                      </ul>
+                    </div>
+            </td>
+          </tr>
+          <?php } ?>
+          <?php } ?>
         </tbody>
         <tbody>
           <tr>
             <td>&nbsp;</td>
-            <td colspan="4"><div class="add"><a onclick="addrow(this,4,2,'新子级菜单')" class="addtr" href="javascript:;"><i class="fa fa-plus-square"></i> 添加子级菜单</a></div></td>
+            <td colspan="4"><div class="add"><a onclick="addrow(this,([<?=$level['id']?>]),2,'新子级菜单')" class="addtr" href="javascript:;"><i class="fa fa-plus-square"></i> 添加子级菜单</a></div></td>
           </tr>
         </tbody>
+        <?php } ?>
         <tbody>
           <tr>
             <td>&nbsp;</td>
@@ -102,7 +131,7 @@ $this->title = 'My Yii Application';
                 </tr>
                 <tr id="item-2">                    
                   <td width="50%">
-                    <input type="text" class="form-control" id="input-id-2" name="m_">
+                    <input type="text" class="form-control" id="input-id-2" name="m">
                   </td>
                   <td width="50%">&nbsp;</td>
                 </tr>
@@ -111,7 +140,7 @@ $this->title = 'My Yii Application';
                 </tr>
                 <tr id="item-3">                    
                   <td width="50%">
-                    <input type="text" class="form-control" id="input-id-3" name="c_">
+                    <input type="text" class="form-control" id="input-id-3" name="c">
                   </td>
                   <td width="50%">&nbsp;</td>
                 </tr>
@@ -120,7 +149,7 @@ $this->title = 'My Yii Application';
                 </tr>
                 <tr id="item-4">                    
                   <td width="50%">
-                    <input type="text" class="form-control" id="input-id-4" name="a_">
+                    <input type="text" class="form-control" id="input-id-4" name="a">
                   </td>
                   <td width="50%">&nbsp;</td>
                 </tr>
@@ -223,7 +252,6 @@ function toggle_group(bodyid,button){
       $(bodyid).show();
       $('.on_off').html('<i class="fa fa-folder-open"></i>');
     }
-   
     return false;
   }
   //单独展开 闭合
@@ -238,15 +266,15 @@ function toggle_group(bodyid,button){
 
 	//编辑
 	function editMenu(id){
-		//AjaxPost('/index.php?m=Admin&c=Index&a=editMenu' + '&id=' + id,'empty','empty',function(data){
-			var data = {"result":1,"action":"empty","msg":{"id":"4","pid":"0","menuname":"\u5fae\u4fe1\u670d\u52a1","url":"index.php?m=Admin&c=Index&a=editMenu","m":"","c":"","a":"","remark":"","child":"1","listorder":"0","is_display":"1","createtime":"1415003692","style":"bg-danger@fa-comments","color":"bg-danger","icon":"fa-comments"}};
+		AjaxPost('<?=Url::to(['system/edit-menu'])?>' + '?id=' + id,'empty','empty',function(data){
+			//var data = {"result":1,"action":"empty","msg":{"id":"4","pid":"0","menuname":"\u5fae\u4fe1\u670d\u52a1","url":"index.php?m=Admin&c=Index&a=editMenu","m":"","c":"","a":"","remark":"","child":"1","listorder":"0","is_display":"1","createtime":"1415003692","style":"bg-danger@fa-comments","color":"bg-danger","icon":"fa-comments"}};
 			$('#menuURL').html(data.msg.url);
 			$('#editForm input[type="text"]').val('');
 			$('#editForm textarea').val('');
 			$('input[name="menuname"]').val(data.msg.menuname);
-			$('input[name="m_"]').val(data.msg.m);
-			$('input[name="c_"]').val(data.msg.c);
-			$('input[name="a_"]').val(data.msg.a);
+			$('input[name="m"]').val(data.msg.m);
+			$('input[name="c"]').val(data.msg.c);
+			$('input[name="a"]').val(data.msg.a);
 			$('textarea[name="remark"]').val(data.msg.remark);
 			$('input[name="id"]').val(data.msg.id);
 			$('input[name="pid"]').val(data.msg.pid);
@@ -259,24 +287,63 @@ function toggle_group(bodyid,button){
 				$('.item-6').hide();
 			}
 			$('#editMenu').modal('show');
-		//});
+		});
 		
 	}
 	//提交编辑
 	function saveMenu(obj){
-		AjaxPost('/index.php?m=Admin&c=Index&a=editMenu&act=save','editForm',obj ? obj : '#SaveMenubtn',function(d){
+		AjaxPost('<?=Url::to(['system/edit-menu','act'=>'save'])?>','editForm',obj ? obj : '#SaveMenubtn',function(d){
 			if(d.result){
 				$('#editMenu').modal('hide');
 			}
 		});
 	}
-	//提交编辑
-	function saveMenu(obj){
-		AjaxPost('/index.php?m=Admin&c=Index&a=editMenu&act=save','editForm',obj ? obj : '#SaveMenubtn',function(d){
-			if(d.result){
-				$('#editMenu').modal('hide');
-			}
-		});
-	}
+
+  function delMenu(id){
+    ShowDeletingDiv('','deleteItem('+ id +',"<?=Url::to(['system/del-menu'])?>")');
+  }
+
+  //确认删除
+function ShowDeletingDiv(title, doDelete) {
+    var html = "<div class=\"modal fade\" id=\"divDeleting\">\
+    <div class=\"modal-dialog\">\
+      <div class=\"modal-content\">\
+        <div class=\"modal-header\">\
+          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\
+          <h4 class=\"modal-title\" id=\"titleDelete\"><i class=\"fa fa-trash-o\"></i> 确认删除？</h4>\
+        </div>\
+        <div class=\"modal-body\">\
+          <p id=\"TScontent\">确定删除吗？删除后将无法恢复！</p>\
+        </div>\
+        <div class=\"modal-footer\">\
+          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">关闭</button>\
+          <button type=\"button\" class=\"btn btn-info\" id=\"btnDelete\">确定删除</button>\
+        </div>\
+      </div>\
+    </div>\
+    </div>";
+    var div = document.getElementById('divDeleting');
+    if (div) {
+      $('#divDeleting').remove();
+    }
+    $('body').append(html);
+    if (title){
+       // $("#titleDelete").html(title);
+        $('#TScontent').html(title);
+    }
+    if (doDelete){
+        $("#btnDelete").bind("click", deldata = function () {
+            $("#divDeleting").hide();
+            eval(doDelete);
+        });
+    }
+    $("#divDeleting").modal('show');
+}
+//执行删除
+function deleteItem(id,url) {
+  $('#divDeleting').modal('hide');
+  AjaxPost(url+'?id='+id, 'formEmpty');
+}
+
 
 </script>

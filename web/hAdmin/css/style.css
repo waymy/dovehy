@@ -3741,8 +3741,9 @@ nav.page-tabs .page-tabs-content {
 }
 
 #content-main {
-    height: calc(100% - 50px);
+    /*height: calc(100% - 50px);*/
     overflow: hidden;
+	background-color: #FFF;
 }
 
 .fixed-nav #content-main {
@@ -7609,7 +7610,7 @@ body.skin-3 {
         display: none;
     }
     #content-main {
-        height: calc(100% - 50px);
+        /*height: calc(100% - 50px);*/
     }
     .fixed-nav #content-main {
         height: calc(100% - 50px);

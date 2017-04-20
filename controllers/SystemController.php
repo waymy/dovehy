@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Menu;
 
 
 class SystemController extends Controller
@@ -64,12 +65,65 @@ class SystemController extends Controller
     {
         return $this->render('index');
     }
+    /**
+     * 提示函数 自动判断是否是AJAX访问
+     * @param  [type] $arr array('result'=> 0, 'action' => 'alert','msg' => '用户名或密码不对！'));
+     * @return [type]
+     */
+    public function prompts($arr){
+        $request = Yii::$app->request;
+        if($request->isAjax){
+            echo json_encode($arr);
+            exit();
+        }
+    }
 
     /**
      * 增加菜单
      */
     public function actionMenus(){
-        return $this->render('menus');
+        $model = new Menu();
+        $menus = $model->getMenusList();
+        return $this->render('menus',['menus'=>$menus]);
+    }
+
+    /**
+     * edit menus
+     * @param $id
+     * @return json
+     */
+    public function actionEditMenu(){
+        $req = Yii::$app->request;
+        $id  = $req->get('id');
+        if($req->get('act') == 'save'){
+            $model = Menu::findOne($req->post('id'));
+            if ($model->load(Yii::$app->request->post(),'') && $model->save()) {
+                $res = ['result'=> 1, 'action' => 'reload','msg' => '操作成功！'];
+            }else{
+                $res = ['result'=> 0, 'action' => 'alert','msg' => '操作失败！'];
+            }
+            $this->prompts($res);
+            exit;
+        }
+        $result = (new \yii\db\Query())->select([])
+            ->from('dove_menu')
+            ->where(['id' => $id])
+            ->one();
+        $this->prompts(['result'=> 1, 'action' => 'empty','msg' => $result]);
+    }
+    public function actionDelMenu(){
+        $res = Yii::$app->request;
+        if(!$id = intval($res->get('id'))){
+            $this->prompts(['result'=> 0, 'action' => 'alert','msg' => '系统繁忙，请稍后再试！']);
+        }
+        if($count = Menu::find()->where(['pid' => $id])->count()){
+            $this->prompts(['result'=> 0, 'action' => 'alert','msg' => '请先删除子级栏目']);
+        }
+
+        $row = Menu::find()->where(['pid' => $id])->count()->one();
+        print_r($row);
+
+
     }
 
 }

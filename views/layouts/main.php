@@ -462,6 +462,8 @@ AppAsset::register($this);
     <?=Html::jsFile('@web/hAdmin/js/plugins/metisMenu/jquery.metisMenu.js')?>
     <?=Html::jsFile('@web/hAdmin/js/plugins/slimscroll/jquery.slimscroll.min.js')?>
     <?=Html::jsFile('@web/hAdmin/js/plugins/layer/layer.min.js')?>
+    <?=Html::jsFile('@web/hAdmin/js/noty/jquery.noty.min.js')?>
+    <?=Html::jsFile('@web/hAdmin/js/jquery.formpost.31.js')?>
     <!-- 自定义js -->
     <?=Html::jsFile('@web/hAdmin/js/hAdmin.js?v=4.1.0')?>
     <!-- 第三方插件 -->
