@@ -111,19 +111,47 @@ class SystemController extends Controller
             ->one();
         $this->prompts(['result'=> 1, 'action' => 'empty','msg' => $result]);
     }
+
+    /**
+     * 删除邮件
+     * @throws NotFoundHttpException
+     */
     public function actionDelMenu(){
         $res = Yii::$app->request;
-        if(!$id = intval($res->get('id'))){
+        $id = intval($res->get('id'));
+        if(!$id){
             $this->prompts(['result'=> 0, 'action' => 'alert','msg' => '系统繁忙，请稍后再试！']);
         }
         if($count = Menu::find()->where(['pid' => $id])->count()){
             $this->prompts(['result'=> 0, 'action' => 'alert','msg' => '请先删除子级栏目']);
         }
+        $row = Menu::find()->where(['id' => $id])->asArray()->one();
+        if($this->findModel($id)->delete()){
+            if(!Menu::find()->where(array('pid' => $row['pid']))->count()){
+                $menu= $this->findModel( $row['pid']);
+                $menu->child = 0;
+                $menu->save();
+            }
+            $this->prompts(array('result'=> 1, 'action' => 'reload','msg' => '操作成功！'));
+        }else{
+            $this->prompts(array('result'=> 0, 'action' => 'alert','msg' => '系统繁忙，请稍后再试！'));
+        }
+    }
 
-        $row = Menu::find()->where(['pid' => $id])->count()->one();
-        print_r($row);
-
-
+    /**
+     * Finds the Menu model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return ActionLog the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Menu::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
 }
