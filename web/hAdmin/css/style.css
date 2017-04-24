@@ -3741,8 +3741,8 @@ nav.page-tabs .page-tabs-content {
 }
 
 #content-main {
-    /*height: calc(100% - 50px);*/
-    overflow: hidden;
+    /*height: calc(100% - 50px);
+    overflow: hidden;*/
 	background-color: #FFF;
 }
 
@@ -8033,4 +8033,42 @@ a.addtr{ padding-left:5px; line-height:25px; color:#F60; }
 	.nav-close {
         display: block;
     }	
+}
+/*** 自定义***/
+.btn-primary {
+  color: #fff !important;
+  background-color: #65bd77;
+  border-color: #65bd77;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+  color: #fff !important;
+  background-color: #53b567;
+  border-color: #4bae5f;
+}
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+  background-image: none;
+}
+.btn-primary.disabled,
+.btn-primary.disabled:hover,
+.btn-primary.disabled:focus,
+.btn-primary.disabled:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled],
+.btn-primary[disabled]:hover,
+.btn-primary[disabled]:focus,
+.btn-primary[disabled]:active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary,
+fieldset[disabled] .btn-primary:hover,
+fieldset[disabled] .btn-primary:focus,
+fieldset[disabled] .btn-primary:active,
+fieldset[disabled] .btn-primary.active {
+  background-color: #65bd77;
+  border-color: #65bd77;
 }
