@@ -115,32 +115,33 @@ body.body-small .navbar-top-links li:last-child {
 }
 
 .dropdown-menu {
-    border: medium none;
-    display: none;
-    float: left;
-    font-size: 12px;
-    left: 0;
-    list-style: none outside none;
-    padding: 0;
-    position: absolute;
-    text-shadow: none;
-    top: 100%;
-    z-index: 1000;
-    border-radius: 0;
-    box-shadow: 0 0 3px rgba(86, 96, 117, 0.3);
+  font-size: 13px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
+  border: 1px solid rgba(0,0,0,0.1);
+  min-width:120px;
 }
-
+.dropdown-menu.pull-left {
+  left: 100%;
+}
+.dropdown-menu > .panel {
+  border: none;
+  margin: -5px 0;
+}
 .dropdown-menu > li > a {
-    border-radius: 3px;
-    color: inherit;
-    line-height: 25px;
-    margin: 4px;
-    text-align: left;
-    font-weight: normal;
+  padding: 5px 15px;
 }
-
-.dropdown-menu > li > a.font-bold {
-    font-weight: 600;
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  background-image: none;
+  filter: none;
+  background-color: #f1f1f1 !important;
+  color: #717171;
 }
 
 .navbar-top-links .dropdown-menu li {
@@ -8032,7 +8033,10 @@ a.addtr{ padding-left:5px; line-height:25px; color:#F60; }
 	}
 	.nav-close {
         display: block;
-    }	
+    }
+	.ibox-title {
+		height: 60px;	
+	}	
 }
 /*** 自定义***/
 .btn-primary {
@@ -8072,3 +8076,4 @@ fieldset[disabled] .btn-primary.active {
   background-color: #65bd77;
   border-color: #65bd77;
 }
+

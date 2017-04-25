@@ -29,6 +29,7 @@ AppAsset::register($this);
     <?=Html::cssFile('@web/hAdmin/css/font-awesome.min.css?v=4.4.0')?>
     <?=Html::cssFile('@web/hAdmin/css/animate.css')?>
     <?=Html::cssFile('@web/hAdmin/css/style.css?v=4.1.0')?>
+    <?=Html::jsFile('@web/hAdmin/js/jquery.min.js?v=2.1.4')?>
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     <?php $this->beginBody() ?>
@@ -457,7 +458,6 @@ AppAsset::register($this);
     </div>
     <?php $this->endBody() ?>
     <!-- 全局js -->
-    <?=Html::jsFile('@web/hAdmin/js/jquery.min.js?v=2.1.4')?>
     <?=Html::jsFile('@web/hAdmin/js/bootstrap.min.js?v=3.3.6')?>
     <?=Html::jsFile('@web/hAdmin/js/plugins/metisMenu/jquery.metisMenu.js')?>
     <?=Html::jsFile('@web/hAdmin/js/plugins/slimscroll/jquery.slimscroll.min.js')?>
