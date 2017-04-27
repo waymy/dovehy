@@ -3,8 +3,6 @@
 /* @var $this yii\web\View */
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\LinkPager;
-use yii\grid\GridView;
 $this->title = 'My Yii Application';
 ?>
 
@@ -17,54 +15,8 @@ $this->title = 'My Yii Application';
           <div class="ibox-tools"> <a data-toggle="modal" href="#addRole" class="btn btn-primary btn-xs">添加角色</a> </div>
         </div>
         <div class="ibox-content">
-            <?= GridView::widget([
-       			'dataProvider' => $dataProvider,
-                'options'=> ['class' => 'project-list'],
-				'tableOptions'=> ['class' => 'table table-hover m-b-none'],
-				'columns' => [
-                    [   'class' => 'yii\grid\CheckboxColumn',
-                        'name' => 'post[]',
-                        'headerOptions' => ['width' => '20']
-                    ],
-                    [
-                        'attribute' => 'id',
-                        'headerOptions' => ['width' => '20']
-                    ],
-                    [
-                        'label'=>'角色名称',
-                        'attribute' => 'rolename',
-                    ],
-                    [
-                      'format'=>'raw',
-                      'value'=>function($model){
-                        $active = $model->status==1?"class='active'":'';
-                        return "<a data-toggle='class' $active href='#' onclick='SetStatus(this,$model->id)'><i class='fa fa-check text-success text-active'></i><i class='fa fa-times text-danger text'></i></a>";
-                      },
-                      'headerOptions'=>['width'=>'20']
-                    ],
-					[
-						'label'=>'操作',
-						'format'=>'raw',
-						'value' => function($model){
-							$tmp = "<div class='btn-group'>
-                                  <button class='btn btn-success btn-sm dropdown-toggle' data-toggle='dropdown'>操 作 <span class='caret'></span></button>
-                                  <ul class='dropdown-menu pull-right'>
-                                    <li><a href='javascript:;' onclick='editRole($model->id)'><i class='fa fa-edit'></i> 编辑</a></li>
-                                    <li class='divider m-tb-sm'></li>
-                                    <li><a href='javascript:;' onclick='menuPriv($model->id)'><i class='fa fa-cogs'></i> 栏目权限</a></li>
-                                    <li class='divider m-tb-sm'></li>
-                                    <li><a href='javascript:;' onclick='deleting($model->id)'><i class='fa fa-trash-o'></i> &nbsp;删除</a></li>
-                                  </ul>
-                                </div>";
-							return $tmp;
-						},
-                        'headerOptions' => ['width' => '80']
-					]        
-				],
-                'layout'=>'{items}{pager}',
-            ]); ?>
-          <!--<div class="project-list">
-            <table class="table table-hover m-b-none">
+          <div class="project-list">
+            <table class="table table-hover">
               <thead>
                 <tr>
                   <th width="20"></th>
@@ -85,8 +37,8 @@ $this->title = 'My Yii Application';
                       <ul class="dropdown-menu pull-right">
                         <li><a href="javascript:;" onclick="editRole(1)"><i class="fa fa-edit"></i> 编辑</a></li>
                         <li class="divider m-tb-sm"></li>
-                        <li>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-wrench"></i> 权限设置</li>
-                              <li class="divider m-tb-sm"></li>
+                        <!--<li>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-wrench"></i> 权限设置</li>
+                              <li class="divider m-tb-sm"></li>-->
                         <li>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cogs"></i> 栏目权限</li>
                         <li class="divider m-tb-sm"></li>
                         <li>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-trash-o"></i> &nbsp;删除</li>
@@ -103,8 +55,8 @@ $this->title = 'My Yii Application';
                       <ul class="dropdown-menu pull-right">
                         <li><a href="javascript:;" onclick="editRole(8)"><i class="fa fa-edit"></i> 编辑</a></li>
                         <li class="divider m-tb-sm"></li>
-                        <li><a href="javascript:;" onclick="deleting(8)"><i class="fa fa-wrench"></i> 权限设置</a></li>
-                              <li class="divider m-tb-sm"></li>
+                        <!--<li><a href="javascript:;" onclick="deleting(8)"><i class="fa fa-wrench"></i> 权限设置</a></li>
+                              <li class="divider m-tb-sm"></li>-->
                         <li><a href="javascript:;" onclick="menuPriv(8)"><i class="fa fa-cogs"></i> 栏目权限</a></li>
                         <li class="divider m-tb-sm"></li>
                         <li><a href="javascript:;" onclick="deleting(8)"><i class="fa fa-trash-o"></i> &nbsp;删除</a></li>
@@ -113,7 +65,7 @@ $this->title = 'My Yii Application';
                 </tr>
               </tbody>
             </table>
-          </div>-->
+          </div>
         </div>
       </div>
     </div>
@@ -121,43 +73,45 @@ $this->title = 'My Yii Application';
 </div>
 <!-- 添加框 -->
 <div class="modal fade" id="addRole">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><i class="fa fa-pencil-square-o"></i> 添加角色</h4>
-      </div>
-      <form  id="addForm" class="form-horizontal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-pencil-square-o"></i> 添加角色</h4>
+        </div>
+        <form  id="addForm" class="form-horizontal">
         <div class="modal-body">
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tbody>
-              <tr>
-                <td class="p-b"><label class="control-label" for="input-id-1">角色名称</label></td>
-              </tr>
-              <tr>
-                <td><input type="text" class="form-control w-max-300" id="input-id-1" name="rolename" value="" datatype="s" nullmsg="请输入角色名称">
-                  <div class="Validform_checktip formError"></div></td>
-              </tr>
-              <tr>
-                <td  class="p-b"><label class="control-label" for="input-id-2">remark(备注说明)</label></td>
-              </tr>
-              <tr>
-                <td><textarea class="form-control w-max-300" rows="3" data-minwords="3" name="remark" id="input-id-2"></textarea></td>
-              </tr>
-            </tbody>
-          </table>
+              <tbody>
+                <tr>
+                  <td class="p-b"><label class="control-label" for="input-id-1">角色名称</label></td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="text" class="form-control w-max-300" id="input-id-1" name="rolename" value="" datatype="s" nullmsg="请输入角色名称">
+                    <div class="Validform_checktip formError"></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td  class="p-b"><label class="control-label" for="input-id-2">remark(备注说明)</label></td>
+                </tr>
+                <tr>                    
+                  <td>
+                    <textarea class="form-control w-max-300" rows="3" data-minwords="3" name="remark" id="input-id-2"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
           <button id="SaveRolebtn" type="submit" class="btn btn-info">确认添加</button>
         </div>
-      </form>
-    </div>
-    <!-- /.modal-content --> 
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
   </div>
-  <!-- /.modal-dialog --> 
-</div>
-<!-- end --> 
+<!-- end -->
 <!-- 编辑 -->
 <div class="modal fade" id="editRole">
   <div class="modal-dialog">
@@ -197,7 +151,7 @@ $this->title = 'My Yii Application';
   </div>
   <!-- /.modal-dialog --> 
 </div>
-<!-- end --> 
+<!-- end -->
 <!-- 栏目设置 -->
 <div class="modal fade" id="menuPriv">
   <div class="modal-dialog">
@@ -206,15 +160,13 @@ $this->title = 'My Yii Application';
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title"><i class="fa fa-cogs"></i> 栏目设置</h4>
       </div>
-      <div class="modal-body" style="width:100%; height:500px;">
-        <iframe src="" name="iframe" id="iframe" frameborder="false"  style="overflow-y:auto;border:none" width="100%"  height="100%" allowtransparency="true"></iframe>
+      <div class="modal-body" style="width:100%; height:400px;">
+      <iframe src="" name="iframe" id="iframe" frameborder="false"  style="overflow-y:auto;border:none" width="100%"  height="100%" allowtransparency="true"></iframe>
       </div>
-    </div>
-    <!-- /.modal-content --> 
-  </div>
-  <!-- /.modal-dialog --> 
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>
-<!-- end --> 
+<!-- end -->
 <script>
 	$(function(){
 		

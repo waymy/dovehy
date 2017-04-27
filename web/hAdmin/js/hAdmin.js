@@ -75,6 +75,31 @@ $(document).ready(function () {
         $('#content-main').css('overflow-y', 'auto');
     }
 
+    //bootstrap 插件
+    +function ($) {
+    "use strict";// 1.使用严格模式ES5支持
+    // 2.alert插件类及原型方法的定义
+    // 3.在jQuery上定义alert插件,并重设插件构造器
+    // 重设插件构造器,可以通过该属性获取插件的真实类函数
+    // 4. 防冲突处理
+    // 5. 绑定触发事件
+        // class
+        $(document).on('click', '[data-toggle^="class"]', function(e){
+            e && e.preventDefault();
+            var $this = $(e.target), $class , $target, $tmp, $classes, $targets;
+            !$this.data('toggle') && ($this = $this.closest('[data-toggle^="class"]'));
+            $class = $this.data()['toggle'];
+            $target = $this.data('target') || $this.attr('href');
+          $class && ($tmp = $class.split(':')[1]) && ($classes = $tmp.split(','));
+          $target && ($targets = $target.split(','));
+          $targets && $targets.length && $.each($targets, function( index, value ) {
+            ($targets[index] !='#') && $($targets[index]).toggleClass($classes[index]);
+          });
+            $this.toggleClass('active');
+        });
+    }(window.jQuery);
+
+
 });
 
 $(window).bind("load resize", function () {
@@ -104,4 +129,67 @@ function SmoothlyMenu() {
     } else {
         $('#side-menu').removeAttr('style');
     }
+}
+
+  //确认删除
+function ShowDeletingDiv(title, doDelete) {
+    var html = "<div class=\"modal fade\" id=\"divDeleting\">\
+    <div class=\"modal-dialog\">\
+      <div class=\"modal-content\">\
+        <div class=\"modal-header\">\
+          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\
+          <h4 class=\"modal-title\" id=\"titleDelete\"><i class=\"fa fa-trash-o\"></i> 确认删除？</h4>\
+        </div>\
+        <div class=\"modal-body\">\
+          <p id=\"TScontent\">确定删除吗？删除后将无法恢复！</p>\
+        </div>\
+        <div class=\"modal-footer\">\
+          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">关闭</button>\
+          <button type=\"button\" class=\"btn btn-info\" id=\"btnDelete\">确定删除</button>\
+        </div>\
+      </div>\
+    </div>\
+    </div>";
+    var div = document.getElementById('divDeleting');
+    if (div) {
+      $('#divDeleting').remove();
+    }
+    $('body').append(html);
+    if (title){
+       // $("#titleDelete").html(title);
+        $('#TScontent').html(title);
+    }
+    if (doDelete){
+        $("#btnDelete").bind("click", deldata = function () {
+            $("#divDeleting").hide();
+            eval(doDelete);
+        });
+    }
+    $("#divDeleting").modal('show');
+}
+
+
+//折叠栏目
+function toggle_group(bodyid,button){
+  //全部展开 闭合
+  if(bodyid == '.group_'){
+    if($(button).hasClass('end')){
+      $(button).removeClass('end');
+      $(bodyid).hide();
+      $('.on_off').html('<i class="fa fa-folder"></i>');
+    }else{
+      $(button).addClass('end');
+      $(bodyid).show();
+      $('.on_off').html('<i class="fa fa-folder-open"></i>');
+    }
+    return false;
+  }
+  //单独展开 闭合
+	$(bodyid).toggle();
+	if($(bodyid).css('display') == 'none'){
+		$(button).html('<i class="fa fa-folder"></i>');
+	}else{
+		$(button).html('<i class="fa fa-folder-open"></i>');
+	}
+
 }

@@ -29,7 +29,7 @@ $this->title = 'My Yii Application';
             <td><div class="parentboard">
                 <input class="form-control input-sm w-max-100" type="text" name="name[<?=$level['id']?>]" value="<?=$level['menuname']?>">
               </div></td>
-            <td width="50px" style="text-align:center" class="yzm-table-width"><a href="#" onclick="SetDisplay(this,<?=$level['id']?>)" data-toggle="class" class=" active"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+            <td width="50px" style="text-align:center" class="yzm-table-width"><a href="#" onclick="SetDisplay(this,<?=$level['id']?>)" data-toggle="class" class="<? if($level["is_display"]){echo "active";}?>"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
             <td width="200px" class="operate yzm-table-width"><div class="btn-group">
                 <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">操 作 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
@@ -48,13 +48,13 @@ $this->title = 'My Yii Application';
             <td><div class="board">
                 <input class="form-control input-sm w-max-100 inline" type="text" name="name[<?=$level1['id']?>]]" value="<?=$level1['menuname']?>">
                 <a onclick="addrow(this,[<?=$level1['id']?>],3,'添加子菜单')" class="addchildboard " href="javascript:;"><i class="fa fa-plus-square color-2e3e4e"></i> 添加</a> </div></td>
-            <td width="50px" style="text-align:center" class="yzm-table-width"><a href="#" onclick="SetDisplay(this,[<?=$level1['id']?>])" data-toggle="class" class=" active"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
+            <td width="50px" style="text-align:center" class="yzm-table-width"><a href="#" onclick="SetDisplay(this,<?=$level1['id']?>)" data-toggle="class" class="<? if($level1["is_display"]){echo "active";}?>"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
             <td width="200px" class="operate yzm-table-width"><div class="btn-group">
                 <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">操 作 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="javascript:;" onclick="editMenu([<?=$level1['id']?>])"><i class="fa fa-edit"></i> 编辑</a></li>
+                  <li><a href="javascript:;" onclick="editMenu(<?=$level1['id']?>)"><i class="fa fa-edit"></i> 编辑</a></li>
                   <li class="divider m-tb-sm"></li>
-                  <li><a href="javascript:;" onclick="delMenu([<?=$level1['id']?>])"><i class="fa fa-trash-o"></i> &nbsp;删除</a></li>
+                  <li><a href="javascript:;" onclick="delMenu(<?=$level1['id']?>)"><i class="fa fa-trash-o"></i> &nbsp;删除</a></li>
                 </ul>
               </div></td>
           </tr>
@@ -68,7 +68,7 @@ $this->title = 'My Yii Application';
             </div>
             </td>
             <td width="50px" style="text-align:center" class="yzm-table-width">
-              <a href="#" onclick="SetDisplay(this,<?=$level2['id']?>)" data-toggle="class" class="<?php if($level2["is_display"]) echo "active"?>"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+              <a href="#" onclick="SetDisplay(this,<?=$level2['id']?>)" data-toggle="class" class="<?php if($level2["is_display"]) {echo "active";}?>"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
               </td>
             <td width="200px" class="operate yzm-table-width">
             <div class="btn-group">
@@ -87,7 +87,7 @@ $this->title = 'My Yii Application';
         <tbody>
           <tr>
             <td>&nbsp;</td>
-            <td colspan="4"><div class="add"><a onclick="addrow(this,([<?=$level['id']?>]),2,'新子级菜单')" class="addtr" href="javascript:;"><i class="fa fa-plus-square"></i> 添加子级菜单</a></div></td>
+            <td colspan="4"><div class="add"><a onclick="addrow(this,<?=$level['id']?>,2,'新子级菜单')" class="addtr" href="javascript:;"><i class="fa fa-plus-square"></i> 添加子级菜单</a></div></td>
           </tr>
         </tbody>
         <?php } ?>
@@ -239,30 +239,7 @@ function addrow(obj,pid,type,val){
 function deleterow(obj){
 	$(obj).parents('tr').remove();
 }
-//折叠栏目
-function toggle_group(bodyid,button){
-  //全部展开 闭合
-  if(bodyid == '.group_'){
-    if($(button).hasClass('end')){
-      $(button).removeClass('end');
-      $(bodyid).hide();
-      $('.on_off').html('<i class="fa fa-folder"></i>');
-    }else{
-      $(button).addClass('end');
-      $(bodyid).show();
-      $('.on_off').html('<i class="fa fa-folder-open"></i>');
-    }
-    return false;
-  }
-  //单独展开 闭合
-	$(bodyid).toggle();
-	if($(bodyid).css('display') == 'none'){
-		$(button).html('<i class="fa fa-folder"></i>');
-	}else{
-		$(button).html('<i class="fa fa-folder-open"></i>');
-	}
 
-}
 
 	//编辑
 	function editMenu(id){
@@ -303,42 +280,6 @@ function toggle_group(bodyid,button){
     ShowDeletingDiv('','deleteItem('+ id +',"<?=Url::to(['menu/del-menu'])?>")');
   }
 
-  //确认删除
-function ShowDeletingDiv(title, doDelete) {
-    var html = "<div class=\"modal fade\" id=\"divDeleting\">\
-    <div class=\"modal-dialog\">\
-      <div class=\"modal-content\">\
-        <div class=\"modal-header\">\
-          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\
-          <h4 class=\"modal-title\" id=\"titleDelete\"><i class=\"fa fa-trash-o\"></i> 确认删除？</h4>\
-        </div>\
-        <div class=\"modal-body\">\
-          <p id=\"TScontent\">确定删除吗？删除后将无法恢复！</p>\
-        </div>\
-        <div class=\"modal-footer\">\
-          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">关闭</button>\
-          <button type=\"button\" class=\"btn btn-info\" id=\"btnDelete\">确定删除</button>\
-        </div>\
-      </div>\
-    </div>\
-    </div>";
-    var div = document.getElementById('divDeleting');
-    if (div) {
-      $('#divDeleting').remove();
-    }
-    $('body').append(html);
-    if (title){
-       // $("#titleDelete").html(title);
-        $('#TScontent').html(title);
-    }
-    if (doDelete){
-        $("#btnDelete").bind("click", deldata = function () {
-            $("#divDeleting").hide();
-            eval(doDelete);
-        });
-    }
-    $("#divDeleting").modal('show');
-}
 //执行删除
 function deleteItem(id,url) {
   $('#divDeleting').modal('hide');
@@ -350,5 +291,8 @@ function submitForm(obj){
   return false;
 }
 
-
+function SetDisplay(obj,id){
+	var has = $(obj).hasClass('active') ? 0 : 1;
+	AjaxPost('<?=Url::to(['/menu/set-display'])?>' + '?id=' + id + '&has=' + has,'empty','empty');
+}
 </script>

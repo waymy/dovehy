@@ -37,7 +37,6 @@ class MenusearchController extends Controller
     {
         $searchModel = new Menusearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -92,7 +91,6 @@ class MenusearchController extends Controller
             ]);
         }
     }
-
     /**
      * Deletes an existing Menu model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

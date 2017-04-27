@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "dove_menu".
@@ -70,9 +72,9 @@ class Menu extends \yii\db\ActiveRecord
      * 查询全部菜单数据
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function getMenusList(){
-        $result = Menu::find()->select('id,pid,is_display,listorder,menuname')->orderBy('listorder asc,id asc')->asArray('id,pid,is_display,listorder,menuname')->all();
-        $menu = $this->channel($result,1);
+    public function getMenusList($where=''){
+        $result = Menu::find()->where($where)->select('id,pid,is_display,listorder,menuname')->orderBy('listorder asc,id asc')->asArray('id,pid,is_display,listorder,menuname')->all();
+        $menu = self::channel($result,1);
         return $menu;
     }
 
@@ -87,7 +89,7 @@ class Menu extends \yii\db\ActiveRecord
      * @param string $html          栏目名称前缀，用于在视图中显示层次感的栏目列表
      * @return arary
      */
-    public function channel($data, $type = 2, $fieldPri = 'id', $fieldPid = 'pid', $pid = 0, $sid = '', $html = "---", $level = 1) {
+    public static function channel($data, $type = 2, $fieldPri = 'id', $fieldPid = 'pid', $pid = 0, $sid = '', $html = "---", $level = 1) {
         if (!$data) {
             return array();
         }
@@ -98,7 +100,7 @@ class Menu extends \yii\db\ActiveRecord
                     if ($v[$fieldPid] == $pid) {
                         $arr[$v[$fieldPri]] = $v;
                         $arr[$v[$fieldPri]]['html'] = str_repeat($html, $level-1);
-                        $arr[$v[$fieldPri]]["data"] = $this->channel($data, $type, $fieldPri, $fieldPid, $v[$fieldPri], $sid,  $html,$level + 1);
+                        $arr[$v[$fieldPri]]["data"] = self::channel($data, $type, $fieldPri, $fieldPid, $v[$fieldPri], $sid,  $html,$level + 1);
                     }
                 }
                 return $arr;
@@ -111,7 +113,7 @@ class Menu extends \yii\db\ActiveRecord
                         $arr[$id]['level'] = $level;
                         $arr[$id]['html'] = str_repeat($html, $level-1);
                         $sArr = array();
-                        $sArr = $this->channel($data, $type, $fieldPri, $fieldPid, $v[$fieldPri], $sid,  $html, $level + 1);
+                        $sArr = self::channel($data, $type, $fieldPri, $fieldPid, $v[$fieldPri], $sid,  $html, $level + 1);
                         $arr = array_merge($arr,$sArr);
                         $id=count($arr);
                     }
@@ -123,17 +125,11 @@ class Menu extends \yii\db\ActiveRecord
                     if ($v[$fieldPri] == $sid) {
                         $arr[] = $v;
                         $sArr = array();
-                        $sArr = $this->channel($data, $type, $fieldPri, $fieldPid, $pid, $v[$fieldPid], $html, $level + 1);
+                        $sArr = self::channel($data, $type, $fieldPri, $fieldPid, $pid, $v[$fieldPid], $html, $level + 1);
                         $arr = array_merge($arr,$sArr);
                     }
                 }
                 return ($arr);
         }
-    }
-    /**
-     *
-     */
-    public function getEditMenu(){
-
     }
 }
