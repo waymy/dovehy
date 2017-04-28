@@ -3,170 +3,93 @@
 /* @var $this yii\web\View */
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\grid\GridView;
 $this->title = 'My Yii Application';
 ?>
-
-<div class="wrapper wrapper-content">
+ <div class="wrapper wrapper-content">
   <div class="row">
     <div class="col-sm-12">
       <div class="ibox">
         <div class="ibox-title">
-          <h5>角色权限</h5>
-          <div class="ibox-tools"> <a data-toggle="modal" href="#addRole" class="btn btn-primary btn-xs">添加角色</a> </div>
+          <h5>用户管理</h5>
+          <div class="ibox-tools"> <a data-toggle="modal" href="#addRole" class="btn btn-primary btn-xs">添加用户</a> </div>
         </div>
         <div class="ibox-content">
-          <div class="project-list">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th width="20"></th>
-                  <th width="20">ID</th>
-                  <th>角色名称</th>
-                  <th width="20"></th>
-                  <th width="80">操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><input type="checkbox" checked class="i-checks" name="input[]"></td>
-                  <td>111</td>
-                  <td class="project-title">米莫说｜MiMO Show</td>
-                  <td><a href="#" onclick="SetDisplay(this,94)" data-toggle="class" class=""><i class="fa fa-check text-navy text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
-                  <td class="project-actions"><div class="btn-group">
-                      <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">操 作 <span class="caret"></span></button>
-                      <ul class="dropdown-menu pull-right">
-                        <li><a href="javascript:;" onclick="editRole(1)"><i class="fa fa-edit"></i> 编辑</a></li>
-                        <li class="divider m-tb-sm"></li>
-                        <!--<li>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-wrench"></i> 权限设置</li>
-                              <li class="divider m-tb-sm"></li>-->
-                        <li>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cogs"></i> 栏目权限</li>
-                        <li class="divider m-tb-sm"></li>
-                        <li>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-trash-o"></i> &nbsp;删除</li>
-                      </ul>
-                    </div></td>
-                </tr>
-                <tr>
-                  <td><input type="checkbox" checked class="i-checks" name="input[]"></td>
-                  <td>111</td>
-                  <td class="project-title">米莫说｜MiMO Show</td>
-                  <td><a href="#" onclick="SetDisplay(this,94)" data-toggle="class" class=""><i class="fa fa-check text-navy text-active"></i><i class="fa fa-times text-danger text"></i></a></td>
-                  <td class="project-actions"><div class="btn-group">
-                      <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">操 作 <span class="caret"></span></button>
-                      <ul class="dropdown-menu pull-right">
-                        <li><a href="javascript:;" onclick="editRole(8)"><i class="fa fa-edit"></i> 编辑</a></li>
-                        <li class="divider m-tb-sm"></li>
-                        <!--<li><a href="javascript:;" onclick="deleting(8)"><i class="fa fa-wrench"></i> 权限设置</a></li>
-                              <li class="divider m-tb-sm"></li>-->
-                        <li><a href="javascript:;" onclick="menuPriv(8)"><i class="fa fa-cogs"></i> 栏目权限</a></li>
-                        <li class="divider m-tb-sm"></li>
-                        <li><a href="javascript:;" onclick="deleting(8)"><i class="fa fa-trash-o"></i> &nbsp;删除</a></li>
-                      </ul>
-                    </div></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <?= GridView::widget([
+              'dataProvider' => $dataProvider,
+              'columns' => [
+                [
+                  'label'=>'用户名',
+                  'attribute'=>'username',
+                  'headerOptions' => ['width' => '120']
+                ],
+                [
+                  'label'=>'所属角色',
+                  'value'=>function($model){
+                        $_tag=$model->getRelatedRecords()['access'];
+                        if(!empty($_tag)){
+                          $tagName="";
+                          foreach ($_tag as $key => $val) {
+                            foreach ($val['group'] as $v){
+                              $tagName .= $v['title'] . ',';
+                            }
+                          }
+                          return rtrim($tagName,',');
+                        }else{
+                          return '';
+                        }
+                      },
+                  'headerOptions' => ['class'=>'project-title']
+                ],
+                [
+                  'label'=>'登录时间',
+                  'value'=>function($model){
+                    return  date('Y-m-d H:i:s',$model->lastlogintime);
+                  },
+                  'headerOptions'=>['width'=>'150']
+                ],
+                [
+                  'label'=>'创建时间',
+                  'value'=>function($model){
+                    return  date('Y-m-d',$model->lastlogintime);
+                  },
+                  'headerOptions'=>['width'=>'100']
+                ],
+                [
+                  'format'=>'raw',
+                  'value'=>function($model){
+                    return '<a href="#" onclick="SetDisplay(this,'.$model->uid.')" data-toggle="class" class="'.($model->status==1?'active':'').'"><i class="fa fa-check text-navy text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                  },
+                  'headerOptions'=>['width'=>'20']
+                ],
+                [
+                  'header' => '操作',
+                  'format'=>'raw',
+                  'value' => function($model){
+                        $view = "<div class='btn-group'>
+                              <button class='btn btn-success btn-sm dropdown-toggle' data-toggle='dropdown'>操 作 <span class='caret'></span></button>
+                              <ul class='dropdown-menu pull-right'>
+                                <li><a href='javascript:;' onclick='editRole()'><i class='fa fa-edit'></i> 编辑</a></li>
+                                <li class='divider m-tb-sm'></li>
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-cogs'></i> 权限设置</li>
+                                <li class='divider m-tb-sm'></li>
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-trash-o'></i> &nbsp;删除</li>
+                              </ul>
+                            </div>";
+                        return $view;
+                  },
+                  'headerOptions' => ['width' => '80']
+                ],
+              ],
+              'options'=> ['class' => 'project-list'],
+              'tableOptions'=> ['class' => 'table table-hover m-b-none'],
+              'layout'=>'{items}{pager}',
+          ]); ?>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- 添加框 -->
-<div class="modal fade" id="addRole">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title"><i class="fa fa-pencil-square-o"></i> 添加角色</h4>
-        </div>
-        <form  id="addForm" class="form-horizontal">
-        <div class="modal-body">
-          <table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tbody>
-                <tr>
-                  <td class="p-b"><label class="control-label" for="input-id-1">角色名称</label></td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="text" class="form-control w-max-300" id="input-id-1" name="rolename" value="" datatype="s" nullmsg="请输入角色名称">
-                    <div class="Validform_checktip formError"></div>
-                  </td>
-                </tr>
-                <tr>
-                  <td  class="p-b"><label class="control-label" for="input-id-2">remark(备注说明)</label></td>
-                </tr>
-                <tr>                    
-                  <td>
-                    <textarea class="form-control w-max-300" rows="3" data-minwords="3" name="remark" id="input-id-2"></textarea>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-          <button id="SaveRolebtn" type="submit" class="btn btn-info">确认添加</button>
-        </div>
-        </form>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div>
-<!-- end -->
-<!-- 编辑 -->
-<div class="modal fade" id="editRole">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><i class="fa fa-pencil-square-o"></i> 编辑角色</h4>
-      </div>
-      <form id="editForm" class="form-horizontal">
-        <div class="modal-body">
-          <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tbody>
-              <tr>
-                <td class="p-b"><label class="control-label" for="input-id-1">角色名称</label></td>
-              </tr>
-              <tr>
-                <td><input type="text" class="form-control w-max-300" id="input-id-1" name="rolename" value="" datatype="s" nullmsg="请输入角色名称">
-                  <div class="Validform_checktip formError"></div></td>
-              </tr>
-              <tr>
-                <td  class="p-b"><label class="control-label" for="input-id-2">remark(备注说明)</label></td>
-              </tr>
-              <tr>
-                <td><textarea class="form-control w-max-300" rows="3" data-minwords="3" name="remark" id="input-id-2"></textarea></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <input type="hidden" name="id" >
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-          <button id="EditRolebtn" type="submit" class="btn btn-info">保存修改</button>
-        </div>
-      </form>
-    </div>
-    <!-- /.modal-content --> 
-  </div>
-  <!-- /.modal-dialog --> 
-</div>
-<!-- end -->
-<!-- 栏目设置 -->
-<div class="modal fade" id="menuPriv">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><i class="fa fa-cogs"></i> 栏目设置</h4>
-      </div>
-      <div class="modal-body" style="width:100%; height:400px;">
-      <iframe src="" name="iframe" id="iframe" frameborder="false"  style="overflow-y:auto;border:none" width="100%"  height="100%" allowtransparency="true"></iframe>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
-<!-- end -->
 <script>
 	$(function(){
 		

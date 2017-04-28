@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Menu;
 use app\models\Role;
+use app\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -204,15 +205,14 @@ class MenuController extends Controller
         }
     }
 
-    public function actionUserList(){
-        return $this->render('userlist');
-    }
     /************************* 用户管理 *********************/
     /**
      * 用户管理
      */
     public function actionUser(){
-        return $this->render('user');
+        $userModel = new User();
+        $dataProvider  = $userModel->get_user();
+        return $this->render('user',['dataProvider' => $dataProvider]);
     }
     /************************ 用户管理end *****************/
     /**

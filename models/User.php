@@ -2,103 +2,98 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+use Yii;
+use yii\data\ActiveDataProvider;
+
+/**
+ * This is the model class for table "dove_user".
+ *
+ * @property string $uid
+ * @property string $pid
+ * @property string $username
+ * @property string $password
+ * @property string $token
+ * @property string $mobile
+ * @property string $email
+ * @property string $qq
+ * @property integer $level
+ * @property integer $number
+ * @property string $lastloginip
+ * @property integer $lastlogintime
+ * @property integer $login_num
+ * @property string $expiredate
+ * @property integer $status
+ * @property string $createtime
+ */
+class User extends \yii\db\ActiveRecord
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
     /**
      * @inheritdoc
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'dove_user';
     }
 
     /**
      * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function rules()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return [
+            [['uid', 'username', 'password', 'token'], 'required'],
+            [['level', 'number', 'lastlogintime', 'login_num', 'expiredate', 'status', 'createtime'], 'integer'],
+            [['uid', 'pid', 'mobile'], 'string', 'max' => 11],
+            [['username', 'password'], 'string', 'max' => 32],
+            [['token'], 'string', 'max' => 64],
+            [['email'], 'string', 'max' => 120],
+            [['qq', 'lastloginip'], 'string', 'max' => 15],
+        ];
     }
 
     /**
      * @inheritdoc
      */
-    public function getId()
+    public function attributeLabels()
     {
-        return $this->id;
+        return [
+            'uid' => 'Uid',
+            'pid' => 'Pid',
+            'username' => 'Username',
+            'password' => 'Password',
+            'token' => 'Token',
+            'mobile' => 'Mobile',
+            'email' => 'Email',
+            'qq' => 'Qq',
+            'level' => 'Level',
+            'number' => 'Number',
+            'lastloginip' => 'Lastloginip',
+            'lastlogintime' => 'Lastlogintime',
+            'login_num' => 'Login Num',
+            'expiredate' => 'Expiredate',
+            'status' => 'Status',
+            'createtime' => 'Createtime',
+        ];
     }
 
     /**
-     * @inheritdoc
+     * @return ActiveDataProvider
      */
-    public function getAuthKey()
-    {
-        return $this->authKey;
+    public function get_user(){
+        $query = User::find();
+        $query->joinWith(['access']);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        return $dataProvider;
     }
-
     /**
-     * @inheritdoc
+     * 关联auth表
      */
-    public function validateAuthKey($authKey)
+    public function getAccess()
     {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
-    }
+            // hasOne要求返回两个参数 第一个参数是关联表的类名 第二个参数是两张表的关联关系
+            // 这里uid是auth表关联id, 关联user表的uid id是当前模型的主键id
+            return $this->hasMany(Access::className(), ['uid' => 'uid'])->joinWith(['group']);
+     }
 }
