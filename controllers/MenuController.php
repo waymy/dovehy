@@ -6,6 +6,7 @@ use Yii;
 use app\models\Menu;
 use app\models\Role;
 use app\models\User;
+use app\models\Group;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -214,6 +215,24 @@ class MenuController extends Controller
         $dataProvider  = $userModel->get_user();
         return $this->render('user',['dataProvider' => $dataProvider]);
     }
+    public function actionAdduser(){
+        $result = array();
+        //查询角色
+        $role = Group::find()->select('id,title')->where(['status'=>1])->asArray()->all();
+        return $this->render('adduser',['role'=>$role]);
+    }
+    /**
+     * 编辑用户
+     * @return string
+     */
+    public function actionEdituser(){
+        if(Yii::$app->request->isPost){
+            echo 1111;exit;
+        }
+        $id = Yii::$app->request->get('id');
+        return $this->render('edituser');
+    }
+
     /************************ 用户管理end *****************/
     /**
      * 提示函数 自动判断是否是AJAX访问

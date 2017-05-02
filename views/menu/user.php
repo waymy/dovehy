@@ -67,15 +67,14 @@ $this->title = 'My Yii Application';
                   'format'=>'raw',
                   'value' => function($model){
                         $view = "<div class='btn-group'>
-                              <button class='btn btn-success btn-sm dropdown-toggle' data-toggle='dropdown'>操 作 <span class='caret'></span></button>
-                              <ul class='dropdown-menu pull-right'>
-                                <li><a href='javascript:;' onclick='editRole()'><i class='fa fa-edit'></i> 编辑</a></li>
-                                <li class='divider m-tb-sm'></li>
-                                <li>&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-cogs'></i> 权限设置</li>
-                                <li class='divider m-tb-sm'></li>
-                                <li>&nbsp;&nbsp;&nbsp;&nbsp;<i class='fa fa-trash-o'></i> &nbsp;删除</li>
-                              </ul>
-                            </div>";
+                                  <button class='btn btn-success btn-sm dropdown-toggle' data-toggle='dropdown'>操 作 <span class='caret'></span></button>
+                                  <ul class='dropdown-menu pull-right'>
+                                    <li>".Html::a('<i class="fa fa-edit"></i> 编辑', ['menu/edituser', 'id' => $model->uid], ['title' => '编辑'])."</li>
+                                    <li class='divider m-tb-sm'></li>
+                                    <li><a href='javascript:;' onClick='deleting('".$model->uid."')'><i class='fa fa-trash-o'></i> &nbsp;删除</a></li>
+                                    </if>
+                                  </ul>
+                                </div>";
                         return $view;
                   },
                   'headerOptions' => ['width' => '80']
