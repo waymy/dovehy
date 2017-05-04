@@ -217,6 +217,9 @@ class MenuController extends Controller
     }
     public function actionAdduser(){
         $result = array();
+        if(Yii::$app->request->isPost){
+            $this->prompts(array('result'=> 0, 'action' => 'reload','msg' => '系统繁忙，请稍后再试！'));
+        }
         //查询角色
         $role = Group::find()->select('id,title')->where(['status'=>1])->asArray()->all();
         return $this->render('adduser',['role'=>$role]);

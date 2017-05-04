@@ -10,18 +10,17 @@ namespace app\assets;
 use yii\web\AssetBundle;
 
 /**
+ * This asset bundle provides the [jQuery](http://jquery.com/) JavaScript library.
+ *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class AppAsset extends AssetBundle
+class JqueryAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'css/site.css',
-    ];
     public $js = [
-        'hAdmin/js/jquery.min.js?v=2.1.4',
+        '/hAdmin/js/jquery.min.js?v=2.1.4',
         'hAdmin/js/bootstrap.min.js?v=3.3.6',
         'hAdmin/js/plugins/metisMenu/jquery.metisMenu.js',
         'hAdmin/js/plugins/slimscroll/jquery.slimscroll.min.js',
@@ -30,9 +29,5 @@ class AppAsset extends AssetBundle
         'hAdmin/js/jquery.formpost.31.js',
         'hAdmin/js/hAdmin.js?v=4.1.0',
         'hAdmin/js/plugins/pace/pace.min.js',
-    ];
-    public $depends = [
-        /*'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',*/
     ];
 }

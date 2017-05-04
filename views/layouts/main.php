@@ -457,17 +457,6 @@ AppAsset::register($this);
         <!--右侧部分结束-->
     </div>
     <?php $this->endBody() ?>
-    <!-- 全局js -->
-    <?=Html::jsFile('@web/hAdmin/js/bootstrap.min.js?v=3.3.6')?>
-    <?=Html::jsFile('@web/hAdmin/js/plugins/metisMenu/jquery.metisMenu.js')?>
-    <?=Html::jsFile('@web/hAdmin/js/plugins/slimscroll/jquery.slimscroll.min.js')?>
-    <?=Html::jsFile('@web/hAdmin/js/plugins/layer/layer.min.js')?>
-    <?=Html::jsFile('@web/hAdmin/js/noty/jquery.noty.min.js')?>
-    <?=Html::jsFile('@web/hAdmin/js/jquery.formpost.31.js')?>
-    <!-- 自定义js -->
-    <?=Html::jsFile('@web/hAdmin/js/hAdmin.js?v=4.1.0')?>
-    <!-- 第三方插件 -->
-    <?=Html::jsFile('@web/hAdmin/js/plugins/pace/pace.min.js')?>
 </body>
 
 </html>
