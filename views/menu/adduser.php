@@ -126,11 +126,11 @@ $this->title = 'My Yii Application';
 <!-- iCheck -->
 <?=Html::cssFile('@web/hAdmin/css/plugins/iCheck/custom.css')?>
 <?=Html::jsFile('@web/hAdmin/js/plugins/iCheck/icheck.min.js')?>
-<?php $this->registerJsFile("@web/hAdmin/js/plugins/iCheck/icheck.min.js",['depends' => 'app\assets\JqueryAsset']);  ?>
+<?php $this->registerJsFile("@web/hAdmin/js/plugins/iCheck/icheck.min.js",['depends' => 'app\assets\AppAsset']);  ?>
 <?=Html::script("$('.i-checks').iCheck({checkboxClass: 'icheckbox_square-green',radioClass: 'iradio_square-green',});", ['defer' => true])?>
-<?php $this->registerJsFile("@web/hAdmin/js/plugins/validate/jquery.validate.min.js",['depends' => 'app\assets\JqueryAsset']);?>
-<?php $this->registerJsFile("@web/hAdmin/js/plugins/validate/messages_zh.min.js",['depends' => 'app\assets\JqueryAsset']);?>
-<?php $this->registerJsFile("@web/hAdmin/js/form-validate.js",['depends' => 'app\assets\JqueryAsset']);?>
+<?php $this->registerJsFile("@web/hAdmin/js/plugins/validate/jquery.validate.min.js",['depends' => 'app\assets\AppAsset']);?>
+<?php $this->registerJsFile("@web/hAdmin/js/plugins/validate/messages_zh.min.js",['depends' => 'app\assets\AppAsset']);?>
+<?php $this->registerJsFile("@web/hAdmin/js/form-validate.js",['depends' => 'app\assets\AppAsset']);?>
 <?php
 $this->registerJs('
 $(function () {
