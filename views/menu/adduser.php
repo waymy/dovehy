@@ -128,9 +128,6 @@ $this->title = 'My Yii Application';
         </form>
     </div>
 </div>
-<script>
-
-</script>
 <!-- iCheck -->
 <?=Html::cssFile('@web/hAdmin/css/plugins/iCheck/custom.css')?>
 <?=Html::jsFile('@web/hAdmin/js/plugins/iCheck/icheck.min.js')?>

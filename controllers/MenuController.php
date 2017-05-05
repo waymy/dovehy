@@ -235,7 +235,14 @@ class MenuController extends Controller
             echo 1111;exit;
         }
         $id = Yii::$app->request->get('id');
-        return $this->render('edituser');
+        $result = User::find()->asArray()->where(['uid'=>$id])->one();
+        //查询角色
+        $role = Role::find()->select('id,rolename')->where(['status'=>1])->asArray()->all();
+        return $this->render('edituser',[
+                'result' => $result,
+                'role' => $role
+            ]);
+
     }
 
     /************************ 用户管理end *****************/
