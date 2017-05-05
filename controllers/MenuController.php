@@ -6,7 +6,6 @@ use Yii;
 use app\models\Menu;
 use app\models\Role;
 use app\models\User;
-use app\models\Group;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -218,10 +217,13 @@ class MenuController extends Controller
     public function actionAdduser(){
         $result = array();
         if(Yii::$app->request->isPost){
-            $this->prompts(array('result'=> 0, 'action' => 'reload','msg' => '系统繁忙，请稍后再试！'));
+            $data = Yii::$app->request->post();
+            $user = new User();
+            $this->prompts($user->addUser($data));
+            exit;
         }
         //查询角色
-        $role = Group::find()->select('id,title')->where(['status'=>1])->asArray()->all();
+        $role = Role::find()->select('id,rolename')->where(['status'=>1])->asArray()->all();
         return $this->render('adduser',['role'=>$role]);
     }
     /**

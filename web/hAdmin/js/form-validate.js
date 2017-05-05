@@ -14,8 +14,8 @@
                     error.appendTo(element.parent());
                 }
             },
-            errorClass: "help-block m-b-none",
-            validClass: "help-block m-b-none"
+            errorClass: "m-b-none",
+            validClass: "m-b-none"
 
 
         });
@@ -26,8 +26,6 @@
             var icon = "<i class='fa fa-times-circle'></i> ";
             $("#signupForm").validate({
                 rules: {
-                    firstname: "required",
-                    lastname: "required",
                     username: {
                         required: true,
                         minlength: 2
@@ -45,15 +43,11 @@
                         required: true,
                         email: true
                     },
-                    topic: {
-                        required: "#newsletter:checked",
-                        minlength: 2
+                    level: {
+                        required: true,
                     },
-                    agree: "required"
                 },
                 messages: {
-                    firstname: icon + "请输入用户名",
-                    lastname: icon + "请输入您的名字",
                     username: {
                         required: icon + "请输入您的用户名",
                         minlength: icon + "用户名必须两个字符以上"
@@ -68,10 +62,24 @@
                         equalTo: icon + "两次输入的密码不一致"
                     },
                     email: icon + "请输入您的E-mail",
-                },submitHandler : function(obj){
-					AjaxPost('/index.php/menu/adduser','form','.btn-white' ? '.btn-white' : '#EditRolebtn');
-	
+					level: icon + "请选择管理组",
+                },submitHandler : function(){
+					AjaxPost('/index.php/menu/adduser','signupForm','#SaveEventbtn');	
 				}
             });
 
         });
+
+//随机生成字符串
+function suggestPassword(obj,num){
+	var d = "abcdefhjmnpqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWYXZ";
+	var e = num ? num : 16;
+	var b = "";
+	
+	for(var c=0;c<e;c++){
+		b += d.charAt(Math.floor(Math.random()*d.length))
+	}
+	$('#'+obj).val(b);
+	$('#'+obj).focus();
+	return true
+}

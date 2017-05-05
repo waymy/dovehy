@@ -96,4 +96,38 @@ class User extends \yii\db\ActiveRecord
             // 这里uid是auth表关联id, 关联user表的uid id是当前模型的主键id
             return $this->hasMany(Access::className(), ['uid' => 'uid'])->joinWith(['group']);
      }
+
+    public function addUser($data){
+        if(empty($data['username']) && empty($data['password']) && empty($data['token'])){
+            return ['result'=> 0, 'action' => 'alert','msg' => '请填写用户基本信息！'];
+        }
+        //用户是否存在
+        $row_username = User::find()->where(array('username' => $data['username']))->count('uid');
+        if($row_username){
+            return['result'=> 0, 'action' => 'alert','msg' => '该用户名已存在！'];
+        }
+        //toke是否存在
+        $row_token = User::find()->where(array('token' => $data['token']))->count('uid');
+        if($row_token){
+            return ['result'=> 0, 'action' => 'alert','msg' => '该token已存在！'];
+        }
+        $this->setAttributes($data);
+        $this->uid  = $this->create_guid();
+        $this->password = md5($this->password);
+        if($this->save()){
+            $url = Yii::$app->urlManager->createUrl(['menu/user']);
+            return ['result'=> 1, 'action' => 'send_goto','msg' => array('msg' => '操作成功！','url' => $url)];
+        }else{
+            var_dump($this->getErrors());
+            return ['result'=> 0, 'action' => 'alert','msg' => '操作失败！'];
+        }
+    }
+    /**创建全球唯一标识id*/
+    public function create_guid($flag =''){
+        //$zimu = range('A','Z');
+        //shuffle($zimu);
+        $flag = $flag ? $flag : '';
+        $uuid = $flag . rand(100000000,999999999);
+        return $uuid;
+    }
 }

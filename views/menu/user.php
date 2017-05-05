@@ -12,7 +12,7 @@ $this->title = 'My Yii Application';
       <div class="ibox">
         <div class="ibox-title">
           <h5>用户管理</h5>
-          <div class="ibox-tools"> <a data-toggle="modal" href="#addRole" class="btn btn-primary btn-xs">添加用户</a> </div>
+          <div class="ibox-tools"> <a data-toggle="modal" href="<?=Url::to(['/menu/adduser'])?>" class="btn btn-primary btn-xs">添加用户</a> </div>
         </div>
         <div class="ibox-content">
           <?= GridView::widget([
